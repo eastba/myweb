@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>巴巴比特</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100dvh; /* 使用 dvh 替代 vh */
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            background-color: #f8f8f8;
+            font-family: '楷体', 'KaiTi', serif;
+            background-image: url('bg.jpg');
+            background-blend-mode: multiply;
+            background-size: cover;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .welcome-container {
+            width: 100%;
+            max-width: 100%;
+            height: 280px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.96);
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 1.5s ease-out;
+            position: relative;
+            z-index: 1;
+            box-sizing: border-box;
+            margin-top: 14dvh; /* 使用 dvh */
+            margin-bottom: 20dvh; /* 增加底部间距 */
+        }
+
+        .welcome-text {
+            font-size: 2rem;
+            color: #333;
+            line-height: 2.8rem;
+            margin: 0 20px;
+            max-width: 800px;
+            transition: opacity 0.8s ease;
+            padding: 0 20px;
+        }
+
+        .bottom-container {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            z-index: 2; /* 提高层级 */
+        }
+
+        /* 平板设备适配 */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .welcome-container {
+                height: 240px; /* 缩小高度 */
+                margin-top: 3vh; /* 调整顶部间距 */
+                margin-bottom: 15dvh; /* 增加底部间距 */
+            }
+            
+            .welcome-text {
+                font-size: 1.8rem; /* 调整字体大小 */
+                line-height: 2.4rem;
+            }
+            
+            .bottom-container {
+                bottom: 40px; /* 提高二维码位置 */
+            }
+            
+            .qrcode img {
+                width: 120px; /* 调整二维码大小 */
+            }
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .welcome-container {
+                height: auto;
+                padding: 30px 20px;
+                margin-top: 30vh; /* 移动端顶部间距减小 */
+                justify-content: flex-start; /* 内容顶部对齐 */
+            }
+            
+            .welcome-text {
+                font-size: 1.5rem;
+                line-height: 2rem;
+                margin-top: 20px;
+            }
+            
+            .bottom-container {
+                bottom: 30px;
+            }
+            
+            .qrcode img {
+                width: 110px;
+            }
+        }
+
+        .qrcode img {
+            width: 130px;
+            border-radius: 10px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+            border: 3px solid #fff;
+            transition: transform 0.3s ease;
+        }
+
+        .qrcode img:hover {
+            transform: scale(1.08);
+        }
+
+        .copyright {
+            font-size: 12px;
+            color: #666;
+            margin-top: 18px;
+            letter-spacing: 0.8px;
+            font-family: 'Arial', sans-serif;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="welcome-container">
+        <p class="welcome-text" id="welcomeMessage"></p>
+    </div>
+
+    <div class="bottom-container">
+        <div class="qrcode">
+            <img src="wx.png" alt="微信二维码">
+        </div>
+        <div class="copyright">Designed by DaSen</div>
+    </div>
+
+    <script>
+        const greetings = [
+            "有朋自远方来，不亦乐乎？愿君安坐，共话桑麻。",
+            "贵客临门，蓬荜生辉。清茶已备，愿闻高论。",
+            "幸甚至哉，得见君子。愿此寒舍，可慰风尘。",
+            "山高水长，终得相逢。且尽此杯，以叙幽情。",
+            "春风拂槛，适逢佳客。愿驻玉趾，同赏芳华。",
+            "柴门闻客至，倒履喜迎君。浊酒聊为敬，清谈可忘机。",
+            "云开见月明，客至心欢喜。愿奉甘露饮，同赏玉壶冰。",
+            "陋室承青眼，高贤屈驾来。新茶初煮就，请共此徘徊。"
+        ];
+
+        let currentIndex = -1;
+        
+        function getRandomGreeting() {
+            let newIndex;
+            do {
+                newIndex = Math.floor(Math.random() * greetings.length);
+            } while (newIndex === currentIndex);
+            currentIndex = newIndex;
+            return greetings[currentIndex];
+        }
+
+        function updateGreeting() {
+            const welcomeText = document.getElementById('welcomeMessage');
+            welcomeText.style.opacity = 0;
+            
+            setTimeout(() => {
+                welcomeText.textContent = getRandomGreeting();
+                welcomeText.style.opacity = 1;
+            }, 800);
+        }
+
+        window.onload = function() {
+            updateGreeting();
+            setInterval(updateGreeting, 10000);
+        };
+    </script>
+</body>
+</html>
